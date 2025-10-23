@@ -1,0 +1,43 @@
+import java.io.*;
+import java.util.Scanner;
+
+public class FileEncryptDecrypt {
+    private static final int KEY = 123; // simple XOR key
+
+    // Method to encrypt or decrypt file
+    public static void encryptDecrypt(String sourceFile, String destFile) {
+        try (FileInputStream fis = new FileInputStream(sourceFile);
+             FileOutputStream fos = new FileOutputStream(destFile)) {
+
+            int data;
+            while ((data = fis.read()) != -1) {
+                // XOR operation for encryption and decryption
+                fos.write(data ^ KEY);
+            }
+            System.out.println("✅ Operation completed successfully!");
+        } catch (IOException e) {
+            System.out.println("❌ Error: " + e.getMessage());
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("=== File Encryption/Decryption Tool ===");
+        System.out.print("Enter source file path: ");
+        String source = sc.nextLine();
+
+        System.out.print("Enter destination file path: ");
+        String dest = sc.nextLine();
+
+        System.out.print("Do you want to Encrypt or Decrypt (E/D)? ");
+        char choice = sc.next().toUpperCase().charAt(0);
+
+        if (choice == 'E' || choice == 'D') {
+            encryptDecrypt(source, dest);
+            System.out.println(choice == 'E' ? "🔒 File Encrypted!" : "🔓 File Decrypted!");
+        } else {
+            System.out.println("Invalid choice! Please enter E or D.");
+        }
+        sc.close();
+    }
+}
